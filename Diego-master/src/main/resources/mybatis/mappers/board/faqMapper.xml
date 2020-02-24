@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="faqMapper">
+
+	<sql id="bs">
+		<choose>
+			<when test="kind == 'kt'">
+				where faq_title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kc'">
+				where faq_contents like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	<!-- FAQ List -->
+	<resultMap type="FAQVO" id="faqVOJ">
+		<id property="faq_num" column="faq_num"/>
+		<result property="admin_id" column="admin_id"/>
+		<result property="faq_title" column="faq_title"/>
+		<result property="faq_contents" column="faq_contents"/>
+		<result property="faq_date" column="faq_date"/>
+		<association property="faqCategoryVO" javaType="FAQCategoryVO">
+			<id property="fcat_code" column="fcat_code"/>
+			<result property="fcat_name" column="fcat_name"/>
+		</association>
+	</resultMap>
+	
+<!-- 	<select id="faqList" parameterType="Pager" resultMap="faqVOJ">
+		select D.*,F.fcat_name from
+		(select N.*, rownum R from
+		(select * from faq
+		<include refid="bs"></include>
+		order by faq_num desc) N) D full outer join FAQCategory F
+		on D.fcat_code = F.fcat_code
+		where R between #{startRow} and #{lastRow}
+	</select> -->
+	
+	
+	
+	
+	<select id="faqList" parameterType="Pager" resultMap="faqVOJ">
+		select D.*,F.fcat_name from
+		(select N.*, rownum R from
+		(select * from
+		(select * from faq
+		<include refid="bs"></include>)
+		where fcat_code like #{fcat_code} order by faq_num desc) N) D full outer join FAQCategory F
+		on D.fcat_code = F.fcat_code
+		where R between #{startRow} and #{lastRow}
+	</select>
+
+	<!-- faq Count -->
+	<select id="faqCount" resultType="Integer" parameterType="Pager">
+		 select count(faq_num) from (select * from faq where fcat_code like #{fcat_code})
+		 <include refid="bs"></include>
+	</select>
+
+	<!-- Write -->
+	<insert id="faqWrite" parameterType="FAQVO">
+		<selectKey order="BEFORE" resultType="Integer"
+			keyProperty="faq_num">
+			select faq_seq.nextval from dual
+		</selectKey>
+
+		insert into faq values
+		(#{admin_id}, #{faq_num}, #{faq_title},
+		#{faq_contents}, #{fcat_code}, sysdate)
+	</insert>
+
+	<!-- SelectOne -->
+	<select id="faqSelect" parameterType="FAQVO" resultType="FAQVO">
+		select *
+		from faq where faq_num=#{faq_num}
+	</select>
+
+	<!-- Delete -->
+	<delete id="faqDelete" parameterType="FAQVO">
+		delete faq where
+		faq_num=#{faq_num}
+	</delete>
+
+	<!-- Update -->
+	<update id="faqUpdate" parameterType="FAQVO">
+		update faq set
+		faq_title=#{faq_title}, faq_contents=#{faq_contents},
+		fcat_code=#{fcat_code}, faq_date=sysdate
+		where faq_num=#{faq_num}
+	</update>
+	
+	<!-- Category -->
+	<select id="category" resultType="FAQCategoryVO">
+		select * from FAQCategory
+	</select>
+	<!-- catgortSelect  -->
+	<select id="categorySelect" parameterType="FAQCategoryVO" resultType="FAQCategoryVO">
+		select * from FAQCategory where fcat_code=#{fcat_code}
+	</select>
+	
+</mapper>

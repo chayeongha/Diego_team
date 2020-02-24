@@ -1,0 +1,111 @@
+@charset "UTF-8";
+#listcontentWrap3 {
+    height: 100vh;
+}
+
+#listcontent2 {
+    margin: 0;
+}
+
+#wrap {
+    height: 100vh;
+    width: 65%;
+    float: left;
+    background: url("") no-repeat 0 0;
+    background-size: cover;
+    overflow: hidden;
+        position: relative;
+}
+
+#login_wrap {
+    width: 35%;
+    float: left;
+    padding-top: 190px;
+}
+
+.login {
+    margin: 0 auto;
+    padding: 30px 0;
+    color: #2e2e2e;
+    width: 500px;
+}
+
+#logintitle {
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#logintitle h2 {
+    font-weight: bold;
+    font-size: 26px;
+    color: #000;
+    letter-spacing: -1px;
+    padding-bottom: 15px;
+}
+
+.playfonts {
+    font-family: 'Playfair Display',serif;
+}
+
+#logintitle span {
+    font-size: 13px;
+    line-height: 20px;
+    color: #000;
+}
+.login fieldset {
+    position: relative;
+    width: 380px;
+    margin: 0 auto;
+}
+.box_con {
+    position: relative;
+}
+.box_con label {
+    transition-duration: 166ms;
+    display: inline-block;
+    font-size: 12px;
+}
+#login_wrap input {
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 12px;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.login fieldset input{
+    width: 95%;
+    height: 28px;
+    line-height: 28px;
+    padding: 2px 2px 2px 3px;
+    border: 0 none;
+    color: #8F8F91;
+}
+
+img, fieldset {
+    border: none;
+    vertical-align: top;
+}
+
+.input_under{
+	border-bottom: 2px solid black !important;
+}
+
+.go_wrap {
+    display: flex;
+    margin-top: 16px;
+}
+.goShop {
+    margin-right: 14px;
+    width: 50%;
+}
+.goShop button {
+    background: #000;
+    color: #fff;
+    display: block;
+    text-align: center;
+    padding: 18px 0;
+    font-size: 15px;
+    border: none;
+    width: 183px;
+}

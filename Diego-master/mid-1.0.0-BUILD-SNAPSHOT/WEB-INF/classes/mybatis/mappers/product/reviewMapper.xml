@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="reviewMapper">
+  
+  <sql id="bs">
+
+		<choose>
+			<when test="kind == 'kt'">
+				where pro_num like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where pro_num like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where pro_num like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+	</sql>
+
+<!--리뷰첨부파일가져오기 잘안된다....-->
+<select id="photoReview" parameterType="Integer" resultType="RevFilesVO" >
+select * from revFiles where fnum = (select min(fnum) from revFiles group by rev_num having rev_num= #{rev_num})
+</select>
+
+<!-- 	select * from revFiles  -->
+
+	
+
+
+  <!--(상품+이미지+리뷰+리뷰파일)리스트 -->
+  <select id="reviewList" parameterType="PPager" resultMap="reviewL">
+	select C.*, F.fname ,F.fnum, F.oname from
+  	(select P.*, rownum R from
+  		( select * from
+ ( select A.*,B.pro_main ,V.id, V.rev_num, V.star, V.rev_contents,V.name,V.help, V.rev_date from product A, images B, review V
+            where A.pro_num=B.pro_num and A.pro_num=V.pro_num)<include refid="bs"/> )P)C full outer join revfiles F on C.rev_num = F.rev_num where R between #{startRow} and #{lastRow}
+            
+  
+  </select>
+   
+  <resultMap type="ProductVO" id="reviewL">
+		<id property="pro_num" column="pro_num" />
+		<result property="cat_ref" column="cat_ref" />
+		<result property="pro_name" column="pro_name" />
+		<result property="pro_price" column="pro_price" />
+		<result property="pro_count" column="pro_count" />
+		<result property="pro_sale" column="pro_sale" />
+		<result property="pro_date" column="pro_date" />
+		<result property="contents" column="contents" />
+		<result property="pro_warning" column="pro_warning" />
+		<result property="pro_size" column="pro_size" />
+		<result property="pro_color" column="pro_color" />
+		<result property="pro_vital" column="pro_vital" />
+		<result property="pro_main" column="pro_main" />
+		
+		<collection property="reviewVO" javaType="List" ofType="ReviewVO">
+			<id property="rev_num" column="rev_num" />
+			<result property="id" column="id" />	
+			<result property="star" column="star" />
+			<result property="rev_contents" column="rev_contents" />
+			<result property="name" column="name" />
+			<result property="help" column="help" />
+			<result property="rev_date" column="rev_date" />
+		</collection>
+		
+		<collection property="revFilesVO" javaType="List" ofType="RevFilesVO">		
+			<id property="fnum" column="fnum" />
+			<result property="rev_num" column="rev_num" />
+			<result property="fname" column="fname" />	
+			<result property="oname" column="oname" />
+		
+		</collection>
+		
+		
+		
+	</resultMap>
+   
+  
+  <!--리뷰 카운트-->
+<!--   <select id="reviewCount" resultType="Integer" parameterType="Pager"> -->
+<!--   	select count(rev_num) from review -->
+<!--   	<include refid="bs"/> -->
+<!--   </select> -->
+  
+  <!-- 프로덕트 카운트  -->
+  <select id="productCount" resultType="Integer" parameterType="PPager">
+  	select count(pro_num) from product
+  
+  </select>
+  
+  <!--리뷰 write  -->
+  <insert id="reviewWrite" parameterType="ReviewVO">
+  
+   insert into review(id, pro_num, rev_num,star,name,help,rev_date,rev_contents) values(
+    #{id},#{pro_num},rev_seq.nextval,#{star},#{name},#{help},sysdate,#{rev_contents})
+   </insert>
+
+  	
+	<!--별점평균-->
+	<select id="totalStar" resultType="Double" parameterType="ReviewVO">
+		select avg(star) from review where pro_num=#{pro_num}
+		
+	</select>
+	
+	<!--한상품에대한 리뷰갯수 -->
+	<select id="totalReview" resultType="Integer" parameterType="ReviewVO">
+		  select count(rev_num) from review where pro_num= #{pro_num}
+	</select>
+  	
+  <!--리뷰 셀렉트  -->
+  	<select id="selectReview" resultMap="refiles" parameterType="ReviewVO">
+  		select R.*, F.fnum, F.fname, F.oname from review R full outer join revFiles F on R.rev_num= F.rev_num where R.rev_num=#{rev_num}
+  	</select>
+  	
+  	<resultMap type="ReviewVO" id="refiles">
+  			<id property="rev_num" column="rev_num" />
+  			<result property="id" column="id" />	
+  			<result property="pro_num" column="pro_num" />
+			<result property="star" column="star" />
+			<result property="rev_contents" column="rev_contents" />
+			<result property="name" column="name" />
+			<result property="help" column="help" />
+  		
+  		<collection property="files" javaType="List" ofType="RevFilesVO">		
+			<id property="fnum" column="fnum" />	
+			<result property="fname" column="fname" />	
+			<result property="oname" column="oname" />
+		
+		</collection>
+  	
+  		
+  		
+  	
+  	</resultMap>
+
+
+
+  
+  </mapper>

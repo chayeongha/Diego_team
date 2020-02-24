@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<context:property-placeholder file-encoding="UTF-8" location="classpath:/properties/*.properties"/>
+	
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+			<property name="username" value="${diego.user}"/>
+			<property name="password" value="${diego.password}"/>
+			<property name="url" value="${diego.url}"/>
+			<property name="driverClassName" value="${diego.driver}"/>
+		</bean>
+		
+		<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="mapperLocations" value="classpath:/mybatis/mappers/**/*Mapper.xml"/>
+
+			<property name="configLocation" value="classpath:/mybatis/config/mybatisConfig.xml"/>
+
+		</bean>
+		<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+			<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+		</bean>	
+	
+	
+		<!-- 잘게 잘라온 파일을 받아주는 API -->
+		<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+			<!-- Encoding 설정 -->
+			<property name="defaultEncoding" value="UTF-8"/>
+			<!-- 전체 첨부 용량 (byte 단위) -->
+			<property name="maxUploadSize" value="104857600"/>
+			<!-- 파일당 첨부 용량 (byte 단위) -->
+			<property name="maxUploadSizePerFile" value="10485760"/>
+		</bean>
+		
+</beans>

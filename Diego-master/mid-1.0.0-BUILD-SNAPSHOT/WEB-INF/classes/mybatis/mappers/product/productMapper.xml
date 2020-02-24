@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="productMapper">
+
+	<!--pro_num을 가져온다. -->
+	<!-- <select id="getProNum" resultType="Integer"> select product_seq.nextval 
+		from dual </select> -->
+	<!--검색창 -->
+	<sql id="sw">
+		<choose>
+			<when test="kind == 'kt'">
+				where cat_ref like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where pro_name like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where pro_price like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!--list -->
+	<select id="productList" parameterType="MPager"
+		resultType="ProductVO">
+	select * from
+		(select P.*, rownum R from
+            (select  * FROM 
+              (select A.* ,B.sumnale, B.pro_main from product A, images B
+                 where A.pro_num = B.pro_num
+            )<include refid="sw"/> 
+            order by pro_num desc) P 
+            )
+           where R between #{startRow} and #{lastRow}
+	
+
+	</select>
+
+	<!--count -->
+	<select id="productCount" resultType="Integer" parameterType="MPager">
+		select count(pro_num) from product
+		<include refid="sw"></include>
+	</select>
+
+	<!--insert -->
+	<insert id="productInsert" parameterType="ProductVO">
+		<selectKey order="BEFORE" resultType="Integer"
+			keyProperty="pro_num">
+			select product_seq.nextval from dual
+		</selectKey>
+		insert into product
+		values(#{pro_num},#{cat_ref},#{pro_name},#{pro_price},#{pro_count},0,sysdate,#{contents},#{pro_warning},#{pro_size},#{pro_color},#{pro_vital},#{pro_image})
+	</insert>
+
+	<!--select -->
+	<select id="productSelect" parameterType="ProductVO"
+		resultMap="image">
+		select P.*, I.images_num, I.pro_main, I.sumnale, I.front,
+		I.back, I.pro_model, I.pro_full, I.gif, I.pro_info, I.pro_sizecut
+		from
+		product P full outer join images I
+		on P.pro_num = I.pro_num
+		where
+		P.pro_num=#{pro_num}
+	</select>
+
+
+	<resultMap type="ProductVO" id="image">
+		<id property="pro_num" column="pro_num" />
+		<result property="cat_ref" column="cat_ref" />
+		<result property="pro_name" column="pro_name" />
+		<result property="pro_price" column="pro_price" />
+		<result property="pro_count" column="pro_count" />
+		<result property="pro_sale" column="pro_sale" />
+		<result property="pro_date" column="pro_date" />
+		<result property="contents" column="contents" />
+		<result property="pro_warning" column="pro_warning" />
+		<result property="pro_size" column="pro_size" />
+		<result property="pro_color" column="pro_color" />
+		<result property="pro_vital" column="pro_vital" />
+		<result property="pro_image" column="pro_image" />
+
+		<collection property="images" javaType="List"
+			ofType="ImagesVO">
+			<id property="images_num" column="images_num" />
+			<result property="pro_main" column="pro_main" />
+			<result property="sumnale" column="sumnale" />
+			<result property="front" column="front" />
+			<result property="back" column="back" />
+			<result property="pro_model" column="pro_model" />
+			<result property="pro_full" column="pro_full" />
+			<result property="gif" column="gif" />
+			<result property="pro_info" column="pro_info" />
+			<result property="pro_sizecut" column="pro_sizecut" />
+
+		</collection>
+
+	</resultMap>
+
+
+
+	<!--delete -->
+	<delete id="productDelete" parameterType="Integer">
+		delete product where
+		pro_num=#{pro_num}
+
+	</delete>
+
+
+	<!--update -->
+	<update id="productUpdate" parameterType="ProductVO">
+		update product set
+		pro_name=#{pro_name}, pro_price=#{pro_price}, pro_count=#{pro_count},
+		contents=#{contents}, pro_warning=#{pro_warning},
+		pro_size=#{pro_size}, pro_color=#{pro_color}, pro_vital=#{pro_vital}
+		where pro_num = #{pro_num}
+
+	</update>
+
+<!-- 리뷰 -->
+	<!--리뷰 write  -->
+  <insert id="productReview" parameterType="ReviewVO">
+   <selectKey order="BEFORE" resultType="Integer" keyProperty="rev_num">
+			select rev_seq.nextval from dual
+		</selectKey>
+   
+   insert into review
+   (id, pro_num, rev_num,star,rev_contents,name,help,rev_date) values(
+    #{id},#{pro_num},#{rev_num},#{star},#{rev_contents},#{name},#{help},sysdate)
+   </insert>	
+	
+	
+	<resultMap type="ReviewVO" id="revFile">
+  	<id property="rev_num" column="rev_num"/>
+  	<result property="id" column="id"/>
+  	<result property="star" column="star"/>
+  	<result property="rev_contents" column="rev_contents"/>
+  	<result property="name" column="name"/>
+  	<result property="help" column="help"/>
+  	<result property="rev_date" column="rev_date"/>
+  	<result property="pro_main" column="pro_main"/>
+  	<collection property="files" javaType="java.util.List" ofType="RevFilesVO">
+  		<id property="fnum" column="fnum"/>
+  		<result property="fname" column="fname"/>
+  		<result property="oname" column="oname"/>
+  	</collection>
+	
+	 </resultMap>
+	
+	
+	<!--count -->
+	<select id="reviewCount" resultType="Integer" parameterType="ProductVO">
+		select count(rev_num) from review where pro_num=#{pro_num}
+		
+	</select>
+
+
+	 <!--셀렉트된 리뷰리스트  -->
+  	<select id="reviewList" resultMap="refiles" parameterType="map">
+  		select * from
+  		(select Q.*, rownum A from
+  		 (select * from (select R.*, F.fname, F.fnum from review  R full outer join revFiles F on R.rev_num= F.rev_num) 
+  		 where pro_num=#{pro.pro_num}) Q) 
+  		 where A between #{pager.startRow}and#{pager.lastRow}
+  	</select>
+  	
+  	<resultMap type="ReviewVO" id="refiles">
+  			<id property="rev_num" column="rev_num" />
+  			<result property="pro_num" column="pro_num" />
+  			<result property="id" column="id" />	
+			<result property="star" column="star" />
+			<result property="rev_contents" column="rev_contents" />
+			<result property="name" column="name" />
+			<result property="help" column="help" />
+			<result property="rev_date" column="rev_date" />
+			
+  		<collection property="files" javaType="List" ofType="RevFilesVO">		
+			<id property="fnum" column="fnum" />
+			<result property="rev_num" column="rev_num" />
+			<result property="fname" column="fname" />	
+				
+		</collection>
+  	
+  	</resultMap>
+
+ 	<!--리뷰삭제 -->
+ 	<delete id="reviewDelete" parameterType="Integer">
+ 			delete review where rev_num=#{rev_num}
+ 	
+ 	</delete>
+	
+	<!--리뷰 업데이트 -->
+	<update id="reviewUpdate" parameterType="ReviewVO">
+			update review set rev_contents=#{rev_contents}, star=#{star} where rev_num=#{rev_num}
+	
+	</update>
+
+
+	<select id="productGetInfo" parameterType="ProductVO" resultType="ProductVO">
+		
+		select * from product where pro_num = #{pro_num}
+		
+	</select>
+</mapper>
+  
+  
+
+  
+  
+ 

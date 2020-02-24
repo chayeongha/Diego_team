@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deliveryMapper">
+	<!-- MemberManage List -->
+	<sql id="bs">
+		<choose>
+			<when test="kind == 'kt'">
+				where order_num like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where del_num like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kc'">
+				where del_address like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kd'">
+				where del_status like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	<!-- selectOne -->
+	<select id="deliverySelect" parameterType="DeliveryVO" resultType="DeliveryVO">
+		select * from delivery where num=#{num} 
+	</select>
+	<!-- selectList -->
+	<select id="deliveryList" parameterType="Pager"
+		resultType="DeliveryVO">
+		select * from
+		(select N.*, rownum R from
+		(select * from delivery
+		<include refid="bs"></include>
+		order by num desc) N)
+		where R between #{startRow} and #{lastRow}
+	</select>
+	<!-- delivery count -->
+	<select id="deliveryCount" resultType="Integer"
+		parameterType="Pager">
+		select count(del_num) from delivery
+		<include refid="bs"></include>
+	</select>
+	<!-- delibery insert -->
+	<insert id="deliveryInsert" parameterType="DeliveryVO">
+		insert into delivery values(del_seq.nextval ,#{order_num}, #{del_num}, #{del_status}, #{del_address}, #{del_costpay})
+	</insert>
+	<!-- delibery Update -->
+	<update id="deliveryUpdate" parameterType="DeliveryVO">
+		update delivery set order_num=#{order_num} ,del_num=#{del_num}, del_status=#{del_status}, del_address=#{del_address}, del_costpay=#{del_costpay} where num=#{num}
+	</update>
+	
+	<!-- Delete -->
+	<delete id="deliveryDelete" parameterType="DeliveryVO">
+		delete delivery where num=#{num}
+	</delete>
+	
+</mapper>

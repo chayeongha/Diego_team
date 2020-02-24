@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+#listcontentWrap {
+    position: relative;
+    padding-left: 35px;
+    padding-right: 66px;
+    margin: 0 auto;
+    min-height: 600px;
+    margin-top: 150px;
+}
+li {
+    list-style: none;
+}
+#listcontent {
+    margin-left: 200px;
+}
+
+.titleArea {
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 55px;
+}
+
+.titleArea h2 {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Montserrat',sans-serif;
+}
+
+.ga09list {
+    margin: 0 auto;
+}
+
+.ga09list ul {
+    zoom: 1;
+    width: 100%;
+    margin-bottom: 0;
+    display: table;
+    font-size: 0;
+}
+
+.ga09list ul.grid4 > li {
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    text-align: center;
+    vertical-align: top;
+}
+
+.ga09list .prdpadding {
+    margin: 0 15px 70px 15px;
+    text-align: left;
+}
+
+.ga09list .prdline {
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.ga09list ul a:link {
+    text-decoration: none;
+}
+
+#ga09img2 {
+    z-index: 10;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+img{
+    border: none;
+    vertical-align: top;
+}
+
+.ga09list .name {
+    clear: both;
+    font-size: 13px;
+    margin-bottom: 13px;
+    margin-top: 20px;
+}
+
+utton {
+	border: none;
+	
+}
+
+button img{
+	vertical-align: middle;
+	height: 23.93px;
+}
+
+.pagination li{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.paging{
+	margin: 30px 0;
+    text-align: center;
+    line-height: 0;
+    font-size: 12px;
+    font-family: Verdana,Dotum,AppleGothic,sans-serif;
+}
+
+.paging img{
+	    vertical-align: top;
+}
+
+.listimg{
+	vertical-align: top;
+}
+
+.listnum{
+    vertical-align: middle;
+    font-weight: bold;
+    color: #000;
+    display: block;
+    padding: 15px 7px;
+}
+
+.typeBG a{
+    background: #000;
+    color: #fff;
+    display: block;
+    text-align: center;
+    padding: 18px 0;
+    font-size: 13px;
+    border: none;
+    width: 70px;
+}
+
+.mousehover {
+    text-decoration: none;
+    border-bottom: solid 2px #000;
+}
+
+.warning {
+    display: block;
+    color: #008bcc;
+}
+
+.noData {
+    padding: 50px 0;
+    text-align: center;
+    line-height: 1.8em;
+}
+
+.noData ul {
+    margin: 10px 0 0;
+}
+
+.noData > strong {
+    display: block;
+}

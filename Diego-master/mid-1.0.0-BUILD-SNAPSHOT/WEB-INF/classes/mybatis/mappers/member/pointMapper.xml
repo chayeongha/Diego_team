@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="pointMapper">
+  
+  <insert id="pointInsert" parameterType="point">
+  
+  	insert into point(point_date, id, point_value, point_save, contents, total_point,order_num)
+  		values(sysdate, #{id}, #{point_value},#{point_save}, #{contents}, #{total_point},#{order_num})
+  	
+  </insert>
+  
+  <select id="pointSelect" parameterType="point" resultType="point">
+  	
+  	select * from point where point_date = (select max(point_date) from point where id = #{id})
+  	
+  </select>
+  
+  <select id="myListCount" parameterType="point" resultType="integer">
+  	select count(id) from point where id = #{id}
+  </select>
+  
+  <select id="pointMyList" parameterType="map" resultType="point">
+  	
+  	select * from (select p.*,rownum r from (select * from point where id=#{point.id} order by point_date desc) p )
+  	where r between #{pager.startRow} and #{pager.lastRow}
+  
+  </select>
+  
+  <select id="pointList" resultType="point">
+  
+   select * from point order by point_date desc
+   
+  </select>
+  
+  <select id="pointCancel" parameterType="point" resultType="point">
+  	
+  	select * from point where order_num = #{order_num}
+  
+  </select>
+  
+  
+  
+  
+  </mapper>

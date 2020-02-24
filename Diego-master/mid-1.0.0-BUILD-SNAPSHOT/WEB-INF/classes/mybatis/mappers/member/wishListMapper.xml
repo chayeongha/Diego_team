@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="wishListMapper">
+  
+  <insert id="wishListInsert" parameterType="wishlist">
+  	
+  	insert into wishlist(wish_num, image, id, pro_num, pro_info, price, delivery_cost)
+  	values(wish_seq.nextval,#{image}, #{id}, #{pro_num}, #{pro_info}, #{price},#{delivery_cost})
+  	
+  </insert>
+  
+  <select id="overlapCheck" parameterType="wishlist" resultType="Integer">
+  
+  	select pro_num from wishlist where id = #{id}
+  	
+  </select>
+  
+  <select id="wishListCount" parameterType="wishlist" resultType="Integer">
+  	
+  	select count(wish_num) from wishlist where id = #{id}
+  	
+  </select>
+  
+  <select id="wishListSelectList" parameterType="map" resultType="wishlist">
+  
+  	select * from (select w.*, rownum r from (select * from wishlist where id=#{wish.id} order by wish_num desc) w)
+  	where r between #{pager.startRow} and #{pager.lastRow}
+  
+  </select>
+  
+  <delete id="wishListDelete" parameterType="wishlist">
+  
+  	delete wishlist where wish_num = #{wish_num}
+  
+  </delete>
+	
+<delete id="wishListClean" parameterType="wishlist">
+	
+	delete wishlist where id = #{id}
+	
+</delete>
+  
+  </mapper>

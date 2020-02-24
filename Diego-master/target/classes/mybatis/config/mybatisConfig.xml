@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+
+
+    <configuration>
+  	<typeAliases >
+  		<typeAlias type="java.lang.Double" alias="Double"/>
+  		<typeAlias type="java.lang.Integer" alias="Integer"/>
+  		<typeAlias type="java.lang.String" alias="String"/>
+  		<typeAlias type="java.util.Map" alias="Map"/>
+  		<typeAlias type="java.util.List" alias="List"/>
+  			<typeAlias type="com.diego.mid.util.MPager" alias="MPager"/>
+  		<typeAlias type="com.diego.mid.util.Pager" alias="Pager"/>
+  		<typeAlias type="com.diego.mid.util.PPager" alias="PPager"/>
+  		<typeAlias type="com.diego.mid.model.board.NoticeVO" alias="NoticeVO"/>
+  		<typeAlias type="com.diego.mid.model.board.FAQVO" alias="FAQVO"/>
+  		<typeAlias type="com.diego.mid.model.admin.AdminVO" alias="AdminVO"/>
+  		<typeAlias type="com.diego.mid.model.admin.DeliveryVO" alias="DeliveryVO"/>
+  		<typeAlias type="com.diego.mid.model.board.FAQCategoryVO" alias="FAQCategoryVO"/>
+  		<typeAlias type="com.diego.mid.model.admin.ProManageVO" alias="ProManageVO"/>
+  		<typeAlias type="com.diego.mid.model.admin.QnaManageVO" alias="QnaManageVO"/>
+  		
+  		<typeAlias type="com.diego.mid.model.member.MemberVO" alias="memberVO"/>
+  		<typeAlias type="com.diego.mid.model.member.Coupon" alias="coupon"/>
+  		<typeAlias type="com.diego.mid.model.member.Orders" alias="orders"/>
+  		<typeAlias type="com.diego.mid.model.member.Point" alias="point"/>
+  		<typeAlias type="com.diego.mid.model.member.Wishlist" alias="wishlist"/>
+  		<typeAlias type="com.diego.mid.model.member.Cart" alias="cart"/>
+  		
+		<typeAlias type="com.diego.mid.model.product.ProductVO" alias="ProductVO"/>
+		<typeAlias type="com.diego.mid.model.product.CategoryVO" alias="CategoryVO"/>
+		<typeAlias type="com.diego.mid.model.product.ImagesVO" alias="ImagesVO"/>
+		<typeAlias type="com.diego.mid.model.product.QnaVO" alias="QnaVO"/>
+		<typeAlias type="com.diego.mid.model.product.ReviewVO" alias="ReviewVO"/>
+			<typeAlias type="com.diego.mid.model.product.RevFilesVO" alias="RevFilesVO"/>
+  	</typeAliases>
+
+
+  </configuration>

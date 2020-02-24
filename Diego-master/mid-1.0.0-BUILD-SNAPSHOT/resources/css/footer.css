@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡfooterㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+.footer {
+    background: black;
+    height: 100vh;
+}
+
+.footer_con {
+    max-width: 1450px;
+    margin: 0 auto;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    line-height: 24px;
+    margin-top: 80px;
+    color: black;
+}
+.foot_inner{
+	padding-top: 220px;
+    margin: 0 50px;
+}
+.copypadding{
+	text-align: center;
+}
+
+.footer_logo{
+}
+.footer_logo a {
+	
+    color: white;
+    font-size: 30px;
+}
+
+#center{
+	    padding: 40px 0;
+}
+
+#customer {
+}
+
+#customer li{
+	color: white;
+}
+
+#company{
+	padding-bottom: 40px;
+}
+
+
+.copytext{
+	font-size: 12px;
+    color: gray;
+    display: inline;
+    padding-right: 8px;
+}
+
+#link{
+	font-size: 12px;
+}
+
+#link ul li{
+	display: inline;
+}
+
+
+#link ul li a{
+	padding: 10px;
+}
+
+.scrollTop {
+    right: 40px;
+    position: absolute;
+    bottom: 40px;
+    font-size: 20px;
+    z-index: 99;
+    display: none;
+    color: gray;
+}
+
+footer #topsearch {
+    text-align: center;
+    padding-bottom: 220px;
+    float: none;
+}
+
+footer  #topsearch input {
+    font-size: 100%;
+    font-family: Nanum Barun Gothic,Verdana,Dotum,AppleGothic,sans-serif;
+    color: #353535;
+    vertical-align: middle;
+}
+
+footer #search_fieldset {
+    width: 300px;
+    margin: auto;
+    position: relative;
+}
+
+footer #search_fieldset input {
+    width: 100% !important;
+    border: none!important;
+    border-bottom: 1px solid #fff!important;
+    background: transparent !important;
+    color: #fff !important;
+    padding-bottom: 9px ;
+    text-indent: 8px;
+}
+
+footer #search_fieldset button {
+    position: absolute;
+    right: 0;
+    bottom: 12px;
+}
+
+footer button img {
+    width: 17px;
+}
+
+.scrollTop img{
+   width: 20px;
+   height: 24px;
+   background-color: white;
+   border-radius: 50%;
+}
+
+.kakao_talk {
+    position: fixed;
+    bottom: 80px;
+    right: 27px;
+}
+
+.kakao_talk img {
+    width: 45px;
+}

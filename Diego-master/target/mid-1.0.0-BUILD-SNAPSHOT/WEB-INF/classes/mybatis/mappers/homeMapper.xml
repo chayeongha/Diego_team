@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="homeMapper">
+  		
+  		
+  		<!--검색창 -->
+	<sql id="sw">
+		<choose>
+			<when test="kind == 'kt'">
+				where cat_ref like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where pro_name like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where pro_price like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+	</sql>
+  	
+  	<!-- 메인 리스트 베스트셀러들 -->
+  	<select id="productList" parameterType="MPager" resultType="ProductVO">
+		select * from
+		(select P.*, rownum R from
+            (select  * FROM 
+              (select A.* ,B.sumnale, B.pro_main from product A, images B
+                 where A.pro_num = B.pro_num
+            )<include refid="sw"/> 
+            order by pro_sale desc) P 
+            )
+           where R between #{startRow} and #{lastRow}
+	
+
+	</select>
+  
+  
+  <!--count -->
+	<select id="productCount" resultType="Integer" parameterType="MPager">
+		select count(pro_num) from product
+		<include refid="sw"></include>
+	</select>
+  
+  
+  <!-- 메인 리스트 새상품들 12개까지만... -->
+  	<select id="newProduct" parameterType="MPager" resultType="ProductVO">
+			select * from
+		(select P.*, rownum R from
+		  (select * from 
+			(select A.*,B.sumnale,B.pro_main from product A, images B
+            where A.pro_num = B.pro_num and rownum <![CDATA[<]]> 17  
+			)<include refid="sw"/> 
+			order by pro_date desc) P
+			) 
+			where R between #{startRow} and #{lastRow}
+	
+		
+	</select>
+  
+  	<!--리뷰 리스트 -->
+  <select id="reviewList" parameterType="MPager" resultMap="reviewL">
+	  select C.*, F.fname ,F.fnum, F.oname from
+  	(select P.*, rownum R from
+  		( select * from
+ ( select A.*,B.pro_main ,V.id, V.rev_num, V.star, V.rev_contents,V.name,V.help, V.rev_date from product A, images B, review V
+            where A.pro_num=B.pro_num and A.pro_num=V.pro_num)order by rev_num desc)P)C full outer join revfiles F on C.rev_num = F.rev_num where R between #{startRow} and #{lastRow}
+  
+  </select>
+   
+  <resultMap type="ProductVO" id="reviewL">
+		<id property="pro_num" column="pro_num" />
+		<result property="cat_ref" column="cat_ref" />
+		<result property="pro_name" column="pro_name" />
+		<result property="pro_price" column="pro_price" />
+		<result property="pro_count" column="pro_count" />
+		<result property="pro_sale" column="pro_sale" />
+		<result property="pro_date" column="pro_date" />
+		<result property="contents" column="contents" />
+		<result property="pro_warning" column="pro_warning" />
+		<result property="pro_size" column="pro_size" />
+		<result property="pro_color" column="pro_color" />
+		<result property="pro_vital" column="pro_vital" />
+		<result property="pro_main" column="pro_main" />
+		
+		<collection property="reviewVO" javaType="List" ofType="ReviewVO">
+			<id property="rev_num" column="rev_num" />
+			<result property="id" column="id" />	
+			<result property="star" column="star" />
+			<result property="rev_contents" column="rev_contents" />
+			<result property="name" column="name" />
+			<result property="help" column="help" />
+			<result property="rev_date" column="rev_date" />
+		</collection>
+		
+		<collection property="revFilesVO" javaType="List" ofType="RevFilesVO">		
+			<id property="fnum" column="fnum" />
+			<result property="rev_num" column="rev_num" />
+			<result property="fname" column="fname" />	
+			<result property="oname" column="oname" />
+		
+		</collection>
+		
+		
+		
+	</resultMap>
+  	
+  
+  
+  
+  </mapper>

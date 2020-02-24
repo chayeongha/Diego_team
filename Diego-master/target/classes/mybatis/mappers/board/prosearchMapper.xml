@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="prosearchMapper">
+
+	<sql id="bs">
+		<choose>
+			<when test="kind == 'kw'">
+				where pro_name like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	<!--list -->
+	<select id="productList" parameterType="Pager"
+		resultType="ProductVO">
+	select * from
+		(select P.*, rownum R from
+            (select  * FROM 
+              (select A.* ,B.sumnale, B.pro_main from product A, images B
+                 where A.pro_num = B.pro_num
+            )<include refid="bs"/> 
+            order by pro_num desc) P 
+            )
+           where R between #{startRow} and #{lastRow}
+	
+
+	</select>
+
+	<!--count -->
+	<select id="productCount" resultType="Integer"
+		parameterType="Pager">
+		select count(pro_num) from product
+		<include refid="bs"></include>
+	</select>
+	
+	
+</mapper>

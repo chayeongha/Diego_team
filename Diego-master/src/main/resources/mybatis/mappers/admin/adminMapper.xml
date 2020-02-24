@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMapper">
+
+	<!-- adminJoin -->
+	<insert id="adminJoin" parameterType="AdminVO">
+		insert into admin values(#{admin_id}, #{admin_pw}, #{admin_name}, '9999')
+	</insert>
+	<!-- adminLogin -->
+	<select id="adminLogin" parameterType="AdminVO" resultType="AdminVO">
+		select * from admin where admin_id=#{admin_id} and admin_pw=#{admin_pw}
+	</select>
+	
+	
+	<!-- adminCheckId -->
+	<select id="adminCheckId" resultType="AdminVO"
+		parameterType="AdminVO">
+		select admin_id from admin where admin_id=#{admin_id}
+	</select>
+
+	<!-- adminUpdate -->
+	<update id="adminUpdate" parameterType="AdminVO">
+		update admin set admin_pw=#{admin_pw}, admin_name=#{admin_name} where
+		admin_id=#{admin_id}
+	</update>
+	<!-- adminDelete -->
+	<delete id="adminDelete" parameterType="AdminVO">
+		delete admin where admin_id=#{admin_id}
+	</delete>
+	<!-- MemberManage List -->
+	<sql id="bs">
+		<choose>
+			<when test="kind == 'kt'">
+				where id like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where name like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kc'">
+				where mem_rank like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	<select id="memberList" parameterType="Pager" resultType="memberVO">
+		select * from
+		(select N.*, rownum R from
+		(select * from member 
+		<include refid="bs"></include>
+		order by id desc) N)
+	where R between #{startRow} and #{lastRow}
+	</select>
+	<!-- MemberCount -->
+	<select id="memberCount" resultType="Integer" parameterType="Pager">
+		select count(id) from member
+		<include refid="bs"></include>
+	</select>
+	<!-- MemberSelect  -->
+	<select id="memberSelect" parameterType="memberVO" resultType="memberVO">
+		select * from member where id=#{id}
+	</select>
+	
+	<!-- Member Update -->
+	<update id="memberUpdate" parameterType="memberVO">
+		update member set name=#{name},address_pn=#{address_pn},
+		address_ba=#{address_ba},address_da=#{address_da} ,phone=#{phone}, ad_birth = #{ad_birth},
+		email=#{email},mem_rank=#{mem_rank},ad_local=#{ad_local},lev=#{lev} 
+		where id=#{id}
+	</update>
+	<!-- member Delete -->
+	<delete id="memberDelete" parameterType="memberVO">
+		delete member where id=#{id}
+	</delete>
+		
+		
+	<!-- product manage List-->
+	<resultMap type="PromanageVO" id="proManageListMap">
+		<id property="pro_num" column="pro_num" />
+		<result property="pro_name" column="pro_name" />
+		<result property="pro_price" column="pro_price" />
+		<result property="pro_count" column="pro_count" />
+		<result property="pro_sale" column="pro_sale" />
+		<result property="pro_date" column="pro_date" />
+		<result property="contents" column="contents" />
+		<result property="pro_warning" column="pro_warning" />
+		<result property="pro_size" column="pro_size" />
+		<result property="pro_color" column="pro_color" />
+		<result property="pro_vital" column="pro_vital" />
+		
+		<collection property="categoryVO" javaType="CategoryVO">
+			<id property="cat_ref" column="cat_ref"/>
+			<result property="cat_name" column="cat_name"/>
+		</collection>
+		
+		<collection property="imagesVO" javaType="ImagesVO">
+			<id property="images_num" column="images_num" />
+			<result property="pro_main" column="pro_main" />
+			<result property="sumnale" column="sumnale" />
+			<result property="front" column="front" />
+			<result property="back" column="back" />
+			<result property="pro_model" column="pro_model" />
+			<result property="pro_full" column="pro_full" />
+			<result property="gif" column="gif" />
+			<result property="pro_info" column="pro_info" />
+			<result property="pro_sizecut" column="pro_sizecut" />
+		</collection>
+	</resultMap>
+	
+		<sql id="ps">
+		<choose>
+			<when test="kind == 'kt'">
+				where pro_name like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kc'">
+				where contents like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	<select id="proManageList" parameterType="Pager" resultMap="proManageListMap">
+	select P.*,F.cat_name, I.images_num, I.pro_main, I.sumnale, I.front,
+		I.back, I.pro_model, I.pro_full, I.gif, I.pro_info, I.pro_sizecut from
+		(select N.*, rownum R from
+		(select * from
+		(select * from product
+		<include refid="ps"></include>)
+		where cat_ref like #{cat_ref} order by pro_num desc) N) P full outer join category F
+		on P.cat_ref = F.cat_ref
+        full outer join images I
+        on P.pro_num = I.pro_num
+		where R between #{startRow} and #{lastRow}
+	</select>	
+	
+	<!--count -->
+	<select id="productCount" resultType="Integer"
+		parameterType="Pager">
+		select count(pro_num) from (select * from product where cat_ref like #{cat_ref})
+		<include refid="ps"></include>
+	</select>
+	
+	<!--delete -->
+	<delete id="productDelete" parameterType="Integer" >
+		delete product where
+		pro_num=#{pro_num}
+
+	</delete>
+	<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+	<!--QNAList  -->
+	<sql id="qs">
+		<choose>
+			<when test="kind == 'kt'">
+				where title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kw'">
+				where writer like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kc'">
+				where contents like '%'||#{search}||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	<resultMap type="QnaManageVO" id="qnaListMap">
+	<id property="qna_num" column="qna_num" />
+		<result property="writer" column="writer" />
+		<result property="title" column="title" />
+		<result property="contents" column="contents" />
+		<result property="qna_img" column="qna_img" />
+		<result property="qna_date" column="qna_date" />
+		<result property="step" column="step" />
+		<result property="ref" column="ref" />
+		<result property="depth" column="depth" />
+		<result property="secret" column="secret" />
+		<result property="sec_num" column="sec_num" />
+		
+		<collection property="imagesVO" javaType="ImagesVO">
+			<id property="images_num" column="images_num" />
+			<result property="pro_main" column="pro_main" />
+			<result property="sumnale" column="sumnale" />
+			<result property="front" column="front" />
+			<result property="back" column="back" />
+			<result property="pro_model" column="pro_model" />
+			<result property="pro_full" column="pro_full" />
+			<result property="gif" column="gif" />
+			<result property="pro_info" column="pro_info" />
+			<result property="pro_sizecut" column="pro_sizecut" />
+		</collection>
+		
+		<collection property="productVO" javaType="ProductVO">
+			<id property="pro_num" column="pro_num" />
+			<result property="pro_name" column="pro_name" />
+			<result property="pro_price" column="pro_price" />
+			<result property="pro_count" column="pro_count" />
+			<result property="pro_sale" column="pro_sale" />
+			<result property="pro_date" column="pro_date" />
+			<result property="contents" column="contents" />
+			<result property="pro_warning" column="pro_warning" />
+			<result property="pro_size" column="pro_size" />
+			<result property="pro_color" column="pro_color" />
+			<result property="pro_vital" column="pro_vital" />
+		</collection>
+		
+	</resultMap>
+	
+	<select id="qnaList" resultMap="qnaListMap" parameterType="Pager">
+		 select * from(select Q.*, rownum A from (select * from (select R.*, F.sumnale, P.pro_name from qna R left join images F on R.pro_num = F.pro_num left join product P on R.pro_num = P.pro_num)<include refid="qs"></include>) Q) where A between #{startRow} and #{lastRow}
+	</select>
+	
+	<!--QNA Count  -->
+	<select id="qnaCount" resultType="Integer" parameterType="Pager">
+		select count(qna_num) from qna
+		<include refid="qs"></include>
+	</select>
+		
+
+</mapper>

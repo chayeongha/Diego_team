@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, img {
+    margin: 0;
+    padding: 0;
+}
+
+.fixmenu2{
+	z-index: 9;
+    position: fixed;
+    width: 200px;
+}
+#leftmenuwrap {
+    position: absolute;
+    left: 50px;
+    top: 170px;
+    padding-bottom: 100px;
+    width: 200px;
+}
+
+#leftmenu {
+    width: 200px;
+}
+
+#leftinner {
+    font-family: 'Montserrat',sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+#leftinner ul {
+    margin-bottom: 19px;
+}
+
+#leftinner .title {
+    line-height: 30px;
+    color: black;
+}
+
+#leftinner .sub {
+    padding: 0;
+    line-height: 20px;
+    font-size: 11px;
+}
+
+#leftinner a {
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+#leftinner .sub a {
+    color: gray;
+}
+

@@ -1,0 +1,245 @@
+@charset "UTF-8";
+
+body, code {
+    font-family: Montserrat,Nanum Barun Gothic,sans-serif;
+    color: #353535;
+    background: #fff;
+    height: 100%;
+}
+
+
+.mousehover {
+    text-decoration: none;
+    border-bottom: solid 2px #000;
+}
+
+.pagination li{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.paging{
+	margin: 30px 0;
+    text-align: center;
+    line-height: 0;
+    font-size: 12px;
+    font-family: Verdana,Dotum,AppleGothic,sans-serif;
+}
+
+.paging img{
+	    vertical-align: top;
+}
+
+.listimg{
+	vertical-align: top;
+}
+
+.listnum{
+    vertical-align: middle;
+    font-weight: bold;
+    color: #000;
+    display: block;
+    padding: 15px 7px;
+}
+
+#popup {
+    width: 600px;
+    height: 400px;
+}
+body#popup {
+    min-width: 0;
+}
+
+#popup .ec-base-layer {
+    position: relative;
+    border: 0;
+}
+
+.ec-base-layer {
+    position: absolute;
+    z-index: 100;
+    border: 1px solid #757575;
+    background: #fff;
+}
+
+.header {
+    padding: 12px 35px 12px 19px;
+    color: #fff;
+    background: #2e2e2e;
+}
+
+.header > h1, .ec-base-layer .header > h3 {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ec-base-layer .content {
+    padding: 20px;
+    font-size: 12px;
+}
+
+.ecdf fieldset {
+    text-align: center;
+}
+
+.ec-base-box {
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #eaeaea;
+    color: #404040;
+}
+
+legend {
+    visibility: hidden;
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 0;
+    height: 0;
+    line-height: 0;
+}
+input, select, textarea {
+    font-size: 100%;
+    font-family: Nanum Barun Gothic,Verdana,Dotum,AppleGothic,sans-serif;
+    color: #353535;
+    vertical-align: middle;
+}
+
+#keyword {
+    width: 240px;
+}
+
+input[type=text] {
+    height: 18px;
+    line-height: 20px;
+    padding: 2px 4px;
+    border: 1px solid #d5d5d5;
+    color: #353535;
+    font-size: 12px;
+}
+button {
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+}
+.btnSubmit{
+	display: inline-block;
+    box-sizing: border-box;
+    padding: 2px 8px;
+    border: 1px solid transparent;
+    border-radius: 0;
+    font-family: "굴림",Gulim;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: normal;
+    text-decoration: none;
+    vertical-align: middle;
+    word-spacing: -0.5px;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    color: #fff;
+    background-color: #2e2e2e;
+}
+.btnNormal {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 2px 8px;
+    border: 1px solid #d1d1d1;
+    border-radius: 2px;
+    font-family: "굴림",Gulim;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: normal;
+    text-decoration: none;
+    vertical-align: middle;
+    word-spacing: -0.5px;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    color: #222;
+    background-color: #fff;
+}
+button {
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    cursor: pointer;
+}
+.total {
+    float: left;
+    color: #000;
+}
+
+table {
+    width: 100%;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+th, td {
+    border: 0;
+    vertical-align: top;
+}
+
+.ec-base-table table {
+    position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #eaeaea;
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px solid #eaeaea;
+    color: #fff;
+    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.4;
+}
+.ec-base-table table:first-child {
+    margin-top: 0;
+}
+caption {
+    display: none;
+}
+
+.ec-base-table thead th {
+    padding: 9px 0 8px;
+}
+.ec-base-table th:first-child {
+    border-left: 0;
+}
+.ec-base-table thead th {
+    padding: 14px 0 15px;
+    border-left: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    color: #353535;
+    vertical-align: middle;
+    font-weight: normal;
+    background: #fff;
+}
+.ec-base-table .center {
+    text-align: center;
+}
+.ec-base-table.typeList .center td, .ec-base-table.typeList td.center {
+    padding-left: 0;
+    padding-right: 0;
+}
+table td.thumb img {
+    max-width: 78px;
+    border: 1px solid #d6d6d6;
+}
+.ec-base-table.typeList .center td.left {
+    padding-left: 10px;
+}
+.ec-base-table td {
+    padding: 9px 10px 8px;
+    border-top: 1px solid #eaeaea;
+    color: #353535;
+    vertical-align: middle;
+}
+.ec-base-table .left {
+    text-align: left;
+}
